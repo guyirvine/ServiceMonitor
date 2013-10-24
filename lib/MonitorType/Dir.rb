@@ -9,31 +9,35 @@ class MonitorType_Dir<MonitorType_Threshold
             puts "*** Warning. Directory is not writable, #{@path}."
             puts "*** Warning. Make the directory, #{@path}, writable and try again."
         end
+
         rescue Errno::ENOENT => e
-        puts "***** Directory does not exist, #{@path}."
-        puts "***** Create the directory, #{@path}, and try again."
-        puts "***** eg, mkdir #{@path}"
-        abort();
+        string = "***** Directory does not exist, #{@path}.\n"
+        string = "#{string}***** Create the directory, #{@path}, and try again.\n"
+        string = "#{string}***** eg, mkdir #{@path}"
+        raise MonitorTypeExceptionHandled.new(string)
         rescue Errno::ENOTDIR => e
-        puts "***** The specified path does not point to a directory, #{@path}."
-        puts "***** Either repoint path to a directory, or remove, #{@path}, and create it as a directory."
-        puts "***** eg, rm #{@path} && mkdir #{@path}"
-        abort();
+        string = "***** The specified path does not point to a directory, #{@path}.\n"
+        string = "#{string}***** Either repoint path to a directory, or remove, #{@path}, and create it as a directory.\n"
+        string = "#{string}***** eg, rm #{@path} && mkdir #{@path}"
+        raise MonitorTypeExceptionHandled.new(string)
 	end
-    
-	def initialize( path, params )
-		super( params )
+
+	def initialize( name, path, params )
+		super( name, params )
 		@path = path
 		self.sanitise
+    rescue MonitorTypeExceptionHandled => e
+        puts e.message
+        abort()
 	end
-    
-	def run
+
+	def process
 		number_of_files = Dir.glob( "#{@path}/*" ).length
-		self.check( number_of_files )
+		self.check( number_of_files, "Checking number of files in, #{@path}" )
 	end
 end
 
-def dir( path, params )
-    $a.add( MonitorType_Dir.new( path, params ) )
+def dir( name, path, params )
+    $a.add( MonitorType_Dir.new( name, path, params ) )
 end
 

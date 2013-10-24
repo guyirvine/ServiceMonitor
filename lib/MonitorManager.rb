@@ -10,7 +10,12 @@ class MonitorManager
 
         def run
                 @list.each do |m|
+                    begin
+                        m.sanitise
                         m.run
+                    rescue MonitorTypeExceptionHandled => e
+                        m.alert( )
+                    end
                 end
         end
 end

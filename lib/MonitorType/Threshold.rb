@@ -1,19 +1,19 @@
 
 class MonitorType_Threshold<MonitorType
 
-	def initialize( params )
-                @min = params[:min] ||= 0
-                @max = params[:max]
-		super( params )
+	def initialize( name, params )
+        @min = params[:min] ||= 0
+        @max = params[:max]
+		super( name, params )
 	end
 
-	def check( value )
-                if !@min.nil? && value < @min then
-                        self.alert( "MIN" )
-                end
-                if !@max.nil? && value > @max then
-                        self.alert( "MAX" )
-                end
-
+	def check( value, context_sentence )
+        if !@min.nil? && value < @min then
+            self.alert( "#{context_sentence}\nMinimum threshold exceeded. Minimum: #{@min}, Actual: #{value}" )
+        end
+        if !@max.nil? && value > @max then
+            self.alert( "#{context_sentence}\nMaximum threshold exceeded. Maximum: #{@max}, Actual: #{value}" )
+        end
+        
 	end
 end
