@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+#Add the currently running directory to the start of the load path
+$:.unshift './'
+
+require 'net/smtp'
+require "Alert"
+require "Alert/Email"
+require "MonitorType"
+require "MonitorType/Threshold"
+require "MonitorType/Dir"
+require "MonitorManager"
+
+
+if ARGV.length == 1 then
+        dslName = ARGV[0]
+else
+        abort( "Usage: monitor <path to dsl>" )
+end
+
+
+$a = MonitorManager.new
+
+load dslName
+
+$a.run
+
