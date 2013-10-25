@@ -11,6 +11,11 @@ require "MonitorType/Threshold"
 require "MonitorType/Dir"
 require "MonitorManager"
 
+def log( string, verbose=false )
+	if !ENV["VERBOSE"].nil? || verbose==false then
+		puts string
+	end
+end
 
 if ARGV.length == 1 then
         dslName = ARGV[0]
@@ -21,6 +26,7 @@ end
 
 $a = MonitorManager.new
 
+log "Loading dsl, #{dslName}"
 load dslName
 
 $a.run
