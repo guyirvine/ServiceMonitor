@@ -8,6 +8,7 @@ class MonitorType_Threshold<MonitorType
 	end
 
 	def check( value, context_sentence )
+        value = value.to_i
         if !@min.nil? && value < @min then
             self.alert( "#{context_sentence}\nMinimum threshold exceeded. Minimum: #{@min}, Actual: #{value}" )
         end

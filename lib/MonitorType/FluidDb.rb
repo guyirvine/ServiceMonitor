@@ -20,7 +20,7 @@ class MonitorType_FluidDb<MonitorType_Threshold
 	def process
         value = @fluidDb.queryForValue( @sql, [] )
         
-		self.check( value.to_i, "Checking result of sql query, @{sql}" )
+		self.check( value, "Checking result of sql query, #{@sql}" )
 	end
 end
 
