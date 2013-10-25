@@ -13,10 +13,12 @@ require "MonitorType/Dir"
 require "MonitorType/FluidDb"
 require "MonitorManager"
 
+#Don't buffer stdout
+$stdout.sync = true
+
 def log( string, verbose=false )
     type = verbose ? "VERB" : "INFO"
 	if !ENV["VERBOSE"].nil? || verbose==false then
-		puts string
         timestamp = Time.new.strftime( "%Y-%m-%d %H:%M:%S" )
         puts "[#{type}] #{timestamp} :: #{string}"
     end
@@ -40,6 +42,7 @@ rescue ArgumentError=>e
     puts "*** Ensure each line has the format,"
     puts "***   <command>, [:arg=>value]"
 rescue SystemExit=>e
+rescue SIGTERM=>e
 rescue Exception=>e
     puts e.class.name
     puts e.message
