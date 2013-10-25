@@ -9,6 +9,7 @@ require "Alert/Email"
 require "MonitorType"
 require "MonitorType/Threshold"
 require "MonitorType/Dir"
+require "MonitorType/FluidDb"
 require "MonitorManager"
 
 def log( string, verbose=false )
