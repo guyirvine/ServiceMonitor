@@ -7,10 +7,15 @@ class MonitorType_Beanstalk<MonitorType_Threshold
         @beanstalk = Beanstalk::Pool.new([@connection_string])
 	end
     
-	def initialize( name, queue, params )
-		super( name, params )
+	def initialize( params )
+		super( params )
         @connection_string = params[:beanstalk] || "localhost:11300"
-        @queue = queue
+        if params[:queue].nil? then
+            puts "*** Beanstalk parameter missing, queue"
+            puts "*** :queue => <queue name>"
+            abort
+        end
+        @queue = params[:queue]
 		self.sanitise
         rescue MonitorTypeExceptionHandled => e
         puts e.message
@@ -18,13 +23,18 @@ class MonitorType_Beanstalk<MonitorType_Threshold
 	end
     
 	def process
+        count = 0
+        begin
         tubeStats = @beanstalk.stats_tube(@queue)
+        count = tubeStats["current-jobs-ready"]
+        rescue Beanstalk::NotFoundError=>e
+        end
 
-		self.check( tubeStats["current-jobs-ready"], "Checking number of jobs in queue, #{@queue}" )
+		self.check( count, "Checking number of jobs in queue, #{@queue}" )
 	end
 end
 
-def beanstalk( name, queue, params )
-    $a.add( MonitorType_Beanstalk.new( name, queue, params ) )
+def beanstalk( params )
+    $a.add( MonitorType_Beanstalk.new( params ) )
 end
 

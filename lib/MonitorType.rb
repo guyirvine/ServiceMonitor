@@ -5,8 +5,13 @@ end
 
 class MonitorType
     
-    def initialize( name, params )
-        @name = name
+    def initialize( params )
+        if params[:name].nil? then
+            puts "*** Monitor parameter missing, name"
+            puts "*** :name => <name of monitor>"
+            abort
+        end
+        @name = params[:name]
         @email = params[:email]
         
         cron_string = params[:cron] || "0 1 * * *"

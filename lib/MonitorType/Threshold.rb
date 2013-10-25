@@ -1,10 +1,10 @@
 
 class MonitorType_Threshold<MonitorType
 
-	def initialize( name, params )
+	def initialize( params )
         @min = params[:min] ||= 0
         @max = params[:max]
-		super( name, params )
+		super( params )
 	end
 
 	def check( value, context_sentence )

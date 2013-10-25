@@ -22,9 +22,14 @@ class MonitorType_Dir<MonitorType_Threshold
         raise MonitorTypeExceptionHandled.new(string)
 	end
 
-	def initialize( name, path, params )
-		super( name, params )
-		@path = path
+	def initialize( params )
+		super( params )
+        if params[:path].nil? then
+            puts "*** Dir parameter missing, path"
+            puts "*** :path => <path to directory to be monitored>"
+            abort
+        end
+		@path = params[:path]
 		self.sanitise
     rescue MonitorTypeExceptionHandled => e
         puts e.message
@@ -37,7 +42,7 @@ class MonitorType_Dir<MonitorType_Threshold
 	end
 end
 
-def dir( name, path, params )
-    $a.add( MonitorType_Dir.new( name, path, params ) )
+def dir( params )
+    $a.add( MonitorType_Dir.new( params ) )
 end
 
