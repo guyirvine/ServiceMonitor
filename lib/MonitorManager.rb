@@ -9,14 +9,17 @@ class MonitorManager
         end
 
         def run
+		while true do
                 @list.each do |m|
                     begin
                         m.sanitise
                         m.run
                     rescue MonitorTypeExceptionHandled => e
-                        m.alert( )
+                        m.alert( e.message )
                     end
                 end
+		sleep 0.5
+		end
         end
 end
 

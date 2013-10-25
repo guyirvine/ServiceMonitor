@@ -1,3 +1,4 @@
+require 'parse-cron'
 
 class MonitorTypeExceptionHandled<StandardError
 end
@@ -6,8 +7,12 @@ class MonitorType
     
     def initialize( name, params )
         @name = name
-		@email = params[:email]
-	end
+	@email = params[:email]
+
+	cron_string = params[:cron] || "0 1 * * *"
+        @cron = CronParser.new(cron_string)
+	@next = Time.now - 1
+    end
     
     #Overload this method if any parameters should be checked
     def sanitise
@@ -18,10 +23,15 @@ class MonitorType
     end
     
     def run
-        self.sanitise
-        self.process
-        rescue MonitorTypeExceptionHandled => e
-        m.alert( e.message )
+	if Time.now > @next then
+	  begin 
+	  @next = @cron.next( Time.now )
+          self.sanitise
+          self.process
+          rescue MonitorTypeExceptionHandled => e
+          m.alert( e.message )
+        end
+        end
     end
 
 
