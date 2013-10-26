@@ -1,5 +1,6 @@
 require "MonitorType/Threshold"
 
+#A directory class for checking how many files are in a directory
 class MonitorType_Dir<MonitorType_Threshold
     
 	def sanitise
@@ -22,6 +23,9 @@ class MonitorType_Dir<MonitorType_Threshold
         raise MonitorTypeExceptionHandled.new(string)
 	end
 
+    #Constructor: Extract parameters
+    #
+    # @param [String] path Path to directory to check
 	def initialize( params )
 		super( params )
         if params[:path].nil? then

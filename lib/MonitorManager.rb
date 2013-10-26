@@ -8,6 +8,7 @@ class MonitorManager
         @list.push monitor
     end
     
+    #The main run loop
     def run
 		while true do
             @list.each do |m|
@@ -18,12 +19,12 @@ class MonitorManager
                     m.alert( e.message )
                 end
             end
-            sleep 0.5
+            sleep 0.2
 		end
         
         rescue Interrupt => e
         puts "Exiting on request ..."
-        
+
         rescue Exception => e
         puts e.class.name
         puts "*** This is really unexpected."

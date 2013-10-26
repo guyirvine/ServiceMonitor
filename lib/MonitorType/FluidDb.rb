@@ -1,8 +1,16 @@
 require "FluidDb"
 require "MonitorType/Threshold"
 
+#A database class for checking a single number against a threshold.
+# For example,
+#  get the max timestamp from a table as a date.
+#  subtract this from now
+#  => check that the number is not greater than 2
+
 class MonitorType_FluidDb<MonitorType_Threshold
     
+    #Create the connection to the db, and get the value
+    #This ensures that all params are correct.
 	def sanitise
         begin
             @fluidDb = FluidDb.Db( @uri )
@@ -13,7 +21,7 @@ class MonitorType_FluidDb<MonitorType_Threshold
             puts "*** Please fix the error and run again"
             abort()
         end
-        
+
         begin
         value = @fluidDb.queryForValue( @sql, [] )
         rescue Exception=>e
@@ -24,6 +32,10 @@ class MonitorType_FluidDb<MonitorType_Threshold
         end
 	end
     
+    #Constructor: Extract parameters
+    #
+    # @param [String] uri Connection string to db
+    # @param [String] sql SQL statement to gather a single value
 	def initialize( params )
 		super( params )
         if params[:uri].nil? then
