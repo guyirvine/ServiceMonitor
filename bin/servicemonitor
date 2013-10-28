@@ -24,12 +24,15 @@ def log( string, verbose=false )
     end
 end
 
+
 if ARGV.length == 1 then
         dslName = ARGV[0]
 else
         abort( "Usage: monitor <path to dsl>" )
 end
 
+#Need to remove file name extension 
+ENV["APP_NAME"] = File.basename( dslName ) if ENV["APP_NAME"].nil?
 
 $a = MonitorManager.new
 
@@ -42,7 +45,7 @@ begin
         puts "*** Ensure each line has the format,"
         puts "***   <command>, [:arg=>value]"
     rescue SystemExit=>e
-    rescue SIGTERM=>e
+#    rescue SIGTERM=>e
     rescue Exception=>e
         puts e.class.name
         puts e.message

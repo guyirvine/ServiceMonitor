@@ -26,6 +26,22 @@ class MonitorType
         end
         @name = params[:name]
         @email = params[:email]
+        if !@email.nil? then
+            if params[:email_sender].nil? then
+                if ENV["EMAIL_SENDER"].nil? then
+                    puts "*** Alert parameter missing, email_sender"
+                    puts "*** An email recipient has been specified for monitor, #{@name}, but no email sender has been specified"
+                    puts "*** :email_sender => <email of sender>"
+                    puts "*** or, a catch all environment variable"
+                    puts "*** EMAIL_SENDER=<email of sender>"
+                    abort
+                else
+                    @admin_email = ENV["EMAIL_SENDER"]
+                end
+            else
+                @admin_email = params[:admin_email]
+            end
+        end
         
         cron_string = params[:cron] || "0 1 * * *"
         @cron = CronParser.new(cron_string)
@@ -55,7 +71,7 @@ class MonitorType
                 self.sanitise
                 self.process
                 rescue MonitorTypeExceptionHandled => e
-                m.alert( e.message )
+                self.alert( e.message )
             end
         end
     end
@@ -68,7 +84,7 @@ class MonitorType
         puts "*** "
 		if !@email.nil? then
 			Alert_Email.new( @email, body ).Send
-            puts "Emailed, @email, Body, #{body}"
+            puts "Emailed, #{@email}"
             else
             puts body
 		end

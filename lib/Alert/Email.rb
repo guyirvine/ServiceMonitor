@@ -1,6 +1,8 @@
 require "net/smtp"
 require "Alert"
 
+#Email alert class
+#Uses localhost for sending email - Probably need to change this in the future.
 class Alert_Email
 	def initialize( destination, body )
 		@destination = destination
@@ -10,9 +12,9 @@ class Alert_Email
 	def Send
 
 message = <<MESSAGE_END
-From: Agrimetrics <girvine@lic.co.nz>
+From: #{ENV['APP_NAME']} <girvine@lic.co.nz>
 To: #{@destination}
-Subject: Agrimetrics Alert
+Subject: #{ENV['APP_NAME']} Alert
 
 #{@body}
 .
