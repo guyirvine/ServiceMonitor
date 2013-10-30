@@ -36,10 +36,10 @@ class MonitorType
                     puts "*** EMAIL_SENDER=<email of sender>"
                     abort
                 else
-                    @admin_email = ENV["EMAIL_SENDER"]
+                    @sender_email = ENV["EMAIL_SENDER"]
                 end
             else
-                @admin_email = params[:admin_email]
+                @sender_email = params[:admin_email]
             end
         end
         
@@ -83,7 +83,7 @@ class MonitorType
         body = "#{@name} tripped.\n#{string}"
         puts "*** "
 		if !@email.nil? then
-			Alert_Email.new( @email, body ).Send
+			Alert_Email.new( @sender_email, @email, body ).Send
             puts "Emailed, #{@email}"
             else
             puts body

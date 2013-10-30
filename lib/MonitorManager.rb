@@ -3,11 +3,11 @@ class MonitorManager
     def initialize
         @list = Array.new
     end
-    
+
     def add( monitor )
         @list.push monitor
     end
-    
+
     #The main run loop
     def run
 		while true do

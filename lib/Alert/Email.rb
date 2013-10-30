@@ -4,15 +4,20 @@ require "Alert"
 #Email alert class
 #Uses localhost for sending email - Probably need to change this in the future.
 class Alert_Email
-	def initialize( destination, body )
-		@destination = destination
+	def initialize( sender, destination, body )
+		@sender = sender
 		@body = body
+        
+        if destination.is_a? Array then
+            @destination = "<#{destination.join( ">,<" )}>"
+        else
+            @destination = destination
+        end
 	end
 
 	def Send
-
 message = <<MESSAGE_END
-From: #{ENV['APP_NAME']} <girvine@lic.co.nz>
+From: #{ENV['APP_NAME']} #{@sender}
 To: #{@destination}
 Subject: #{ENV['APP_NAME']} Alert
 
@@ -21,7 +26,7 @@ Subject: #{ENV['APP_NAME']} Alert
 MESSAGE_END
 
 Net::SMTP.start('localhost') do |smtp|
-  smtp.send_message message, 'girvine@lic.co.nz',
+  smtp.send_message message, @sender,
                              @destination
 end
 

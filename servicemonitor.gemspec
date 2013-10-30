@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'servicemonitor'
-  s.version     = '0.0.13'
-  s.date        = '2013-10-27'
+  s.version     = '0.0.15'
+  s.date        = '2013-10-31'
   s.summary     = "ServiceMonitor"
   s.description = "Monitor various parts of the system"
   s.authors     = ["Guy Irvine"]
