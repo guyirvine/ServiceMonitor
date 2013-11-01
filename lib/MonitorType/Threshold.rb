@@ -9,14 +9,35 @@ class MonitorType_Threshold<MonitorType
 		super( params )
 	end
 
+    #Get the context dependent value which is to be checked
+    def getValue
+        raise "Method needs to be overridden"
+    end
+
+    def process
+        if @block.nil? then
+            value = self.getValue
+            else
+            value = @block.call( @params )
+            puts "value: #{value}"
+        end
+    
+        self.check( value )
+    end
+
     #Provides the means to check a value against thresholds
-	def check( value, context_sentence )
+	def check( value )
+        context_sentence = ""
+        if !@context_sentence.nil? then
+            context_sentence = "#{@context_sentence}\n"
+        end
+
         value = value.to_i
         if !@min.nil? && value < @min then
-            self.alert( "#{context_sentence}\nMinimum threshold exceeded. Minimum: #{@min}, Actual: #{value}" )
+            self.alert( "#{context_sentence}Minimum threshold exceeded. Minimum: #{@min}, Actual: #{value}" )
         end
         if !@max.nil? && value > @max then
-            self.alert( "#{context_sentence}\nMaximum threshold exceeded. Maximum: #{@max}, Actual: #{value}" )
+            self.alert( "#{context_sentence}Maximum threshold exceeded. Maximum: #{@max}, Actual: #{value}" )
         end
         
 	end

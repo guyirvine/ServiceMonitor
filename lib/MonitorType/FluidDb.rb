@@ -30,6 +30,7 @@ class MonitorType_FluidDb<MonitorType_Threshold
             puts "*** Please fix the query and run again"
             abort()
         end
+        @params[:fluidDb] = @fluidDb
 	end
     
     #Constructor: Extract parameters
@@ -58,16 +59,17 @@ class MonitorType_FluidDb<MonitorType_Threshold
             abort
         end
         @sql = params[:sql]
+
+        @context_sentence = "Checking result of sql query, #{@sql}"
+
 		self.sanitise
         rescue MonitorTypeExceptionHandled => e
         puts e.message
         abort()
 	end
     
-	def process
-        value = @fluidDb.queryForValue( @sql, [] )
-        
-		self.check( value, "Checking result of sql query, #{@sql}" )
+	def getValue
+        return @fluidDb.queryForValue( @sql, [] )
 	end
 end
 

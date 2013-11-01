@@ -6,6 +6,7 @@ class MonitorType_Beanstalk<MonitorType_Threshold
 
 	def sanitise
         @beanstalk = Beanstalk::Pool.new([@connection_string])
+        @params[:beanstalk = @beanstalk
 	end
     
     #Constructor: Extract parameters
@@ -22,13 +23,16 @@ class MonitorType_Beanstalk<MonitorType_Threshold
             abort
         end
         @queue = params[:queue]
+        
+        @context_sentence = "Checking number of jobs in queue, #{@queue}"
+
 		self.sanitise
         rescue MonitorTypeExceptionHandled => e
         puts e.message
         abort()
 	end
     
-	def process
+	def getValue
         count = 0
         begin
         tubeStats = @beanstalk.stats_tube(@queue)
@@ -36,7 +40,7 @@ class MonitorType_Beanstalk<MonitorType_Threshold
         rescue Beanstalk::NotFoundError=>e
         end
 
-		self.check( count, "Checking number of jobs in queue, #{@queue}" )
+		return count
 	end
 end
 

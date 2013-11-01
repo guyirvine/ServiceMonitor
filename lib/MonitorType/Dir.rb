@@ -10,6 +10,8 @@ class MonitorType_Dir<MonitorType_Threshold
             puts "*** Warning. Directory is not writable, #{@path}."
             puts "*** Warning. Make the directory, #{@path}, writable and try again."
         end
+        
+        @params[:dir] = inputDir
 
         rescue Errno::ENOENT => e
         string = "***** Directory does not exist, #{@path}.\n"
@@ -34,15 +36,17 @@ class MonitorType_Dir<MonitorType_Threshold
             abort
         end
 		@path = params[:path]
+
+        @context_sentence = "Checking number of files in, #{@path}"
+
 		self.sanitise
     rescue MonitorTypeExceptionHandled => e
         puts e.message
         abort()
 	end
 
-	def process
-		number_of_files = Dir.glob( "#{@path}/*" ).length
-		self.check( number_of_files, "Checking number of files in, #{@path}" )
+	def getValue
+		return Dir.glob( "#{@path}/*" ).length
 	end
 end
 

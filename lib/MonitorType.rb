@@ -24,6 +24,8 @@ class MonitorType
             puts "*** :name => <name of monitor>"
             abort
         end
+        @params = params
+        @block = params[:block] if !params[:block].nil?
         @name = params[:name]
         @email = params[:email]
         if !@email.nil? then
@@ -75,7 +77,7 @@ class MonitorType
             end
         end
     end
-    
+
     #Called when a monitor has been tripped
     #
     # @param [String] string A description of the trip that occurred
