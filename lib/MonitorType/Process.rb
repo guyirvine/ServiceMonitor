@@ -26,7 +26,7 @@ class MonitorType_Process<MonitorType_Threshold
 			abort
 		end
 
-		puts "*** Min value will be ignored, setting to 1" unless (params[:min].nil? || params[:min] == 1)
+		puts "*** Min value will be ignored, setting to 1" unless (params[:min].nil? || params[:min] == 0)
 		@min = 1
 
 		puts "*** Max value will be ignored, setting to nil" unless params[:max].nil?
