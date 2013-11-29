@@ -7,6 +7,9 @@ class Alert_Email
 	def initialize( sender, destination, body )
 		@sender = sender
 		@body = body
+
+		@smtp_address = ENV['smtp_address'].nil? ? 'localhost' : ENV['smtp_address']
+        	@smtp_port = ENV['smtp_port'].nil? ? 25 : ENV['smtp_port']
         
         if destination.is_a? Array then
             @destination = "<#{destination.join( ">,<" )}>"
@@ -25,7 +28,7 @@ Subject: #{ENV['APP_NAME']} Alert
 .
 MESSAGE_END
 
-Net::SMTP.start('localhost') do |smtp|
+Net::SMTP.start(@smtp_address,@smtp_port) do |smtp|
   smtp.send_message message, @sender,
                              @destination
 end
