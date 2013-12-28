@@ -19,9 +19,10 @@ class MonitorType_Threshold<MonitorType
             value = self.getValue
             else
             value = @block.call( @params )
-            puts "value: #{value}"
+            string = "value: #{value}\n"
+            puts string
         end
-    
+
         self.check( value )
     end
 

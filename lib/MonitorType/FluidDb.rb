@@ -9,63 +9,59 @@ require "MonitorType/Threshold"
 
 class MonitorType_FluidDb<MonitorType_Threshold
     
+    #Extract parameters
+    #
+    # @param [String] uri Connection string to db
+    # @param [String] sql SQL statement to gather a single value
+	def extractParams
+        if @params[:uri].nil? then
+            string = "*** FluidDb parameter missing, uri\n"
+            string = "#{string}*** :uri => <uri pointing to db to be monitored>"
+            raise MonitorTypeExceptionHandled.new(string)
+        end
+        begin
+            @uri = URI.parse( @params[:uri] )
+            rescue URI::InvalidURIError=>e
+            string = "*** FluidDb encountered an error while parsing the uri"
+            string = "#{string}*** uri: #{@params[:uri]}"
+            string = "#{string}*** Please fix the uri and run again"
+            raise MonitorTypeExceptionHandled.new(string)
+        end
+        
+        if @params[:sql].nil? then
+            string = "*** FluidDb parameter missing, sql"
+            string = "#{string}*** :sql => <sql statement, producing a single column, single row which yeidls a number>"
+            raise MonitorTypeExceptionHandled.new(string)
+        end
+        @sql = @params[:sql]
+        
+        @context_sentence = "Checking result of sql query, #{@sql}"
+        
+	end
+    
     #Create the connection to the db, and get the value
     #This ensures that all params are correct.
-	def sanitise
+	def setup
+
         begin
             @fluidDb = FluidDb.Db( @uri )
             rescue Exception=>e
-            puts "*** FluidDb encountered an error while connecting to the db"
-            puts "*** Error: #{e.message}"
-            puts "*** uri: #{@uri}"
-            puts "*** Please fix the error and run again"
-            abort()
+            string = "*** FluidDb encountered an error while connecting to the db\n"
+            string = "#{string}*** Error: #{e.message}\n"
+            string = "#{string}*** uri: #{@uri}\n"
+            string = "#{string}*** Please 3fix the error and run again\n"
+            raise MonitorTypeExceptionHandled.new(string)
         end
 
         begin
         value = @fluidDb.queryForValue( @sql, [] )
         rescue Exception=>e
-            puts "*** FluidDb encountered an error while running the sql"
-            puts "*** sql: #{@sql}"
-            puts "*** Please fix the query and run again"
-            abort()
+            string = "*** FluidDb encountered an error while running the sql\n"
+            string = "#{string}*** sql: #{@sql}\n"
+            string = "#{string}*** Please fix the query and run again\n"
+            raise MonitorTypeExceptionHandled.new(string)
         end
         @params[:fluidDb] = @fluidDb
-	end
-    
-    #Constructor: Extract parameters
-    #
-    # @param [String] uri Connection string to db
-    # @param [String] sql SQL statement to gather a single value
-	def initialize( params )
-		super( params )
-        if params[:uri].nil? then
-            puts "*** FluidDb parameter missing, uri"
-            puts "*** :uri => <uri pointing to db to be monitored>"
-            abort
-        end
-        begin
-            @uri = URI.parse( params[:uri] )
-        rescue URI::InvalidURIError=>e
-            puts "*** FluidDb encountered an error while parsing the uri"
-            puts "*** uri: #{params[:uri]}"
-            puts "*** Please fix the uri and run again"
-            abort()
-        end
-        
-        if params[:sql].nil? then
-            puts "*** FluidDb parameter missing, sql"
-            puts "*** :sql => <sql statement, producing a single column, single row which yeidls a number>"
-            abort
-        end
-        @sql = params[:sql]
-
-        @context_sentence = "Checking result of sql query, #{@sql}"
-
-		self.sanitise
-        rescue MonitorTypeExceptionHandled => e
-        puts e.message
-        abort()
 	end
     
 	def getValue

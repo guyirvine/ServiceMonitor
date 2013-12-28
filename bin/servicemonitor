@@ -47,7 +47,7 @@ begin
     rescue SystemExit=>e
 #    rescue SIGTERM=>e
     rescue Exception=>e
+puts "What the ..."
         puts e.class.name
         puts e.message
 end
-

@@ -3,16 +3,33 @@ require "MonitorType/Threshold"
 #A directory class for checking how many files are in a directory
 class MonitorType_Dir<MonitorType_Threshold
     
-	def sanitise
+    #Extract parameters
+    #
+    # @param [String] path Path to directory to check
+    def extractParams()
+        if @params[:path].nil? then
+            string = "*** Dir parameter missing, path\n"
+            string = "#{string}*** :path => <path to directory to be monitored>"
+            raise MonitorTypeExceptionHandled.new(string)
+        end
+        @path = @params[:path]
+        
+        @context_sentence = "Checking number of files in, #{@path}"
+        
+    end
+    
+    
+	def setup
         inputDir = Dir.new( @path )
 		@path = inputDir.path
         if !File.writable?( @path ) then
-            puts "*** Warning. Directory is not writable, #{@path}."
-            puts "*** Warning. Make the directory, #{@path}, writable and try again."
+            string = "*** Warning. Directory is not writable, #{@path}.\n"
+            string = "#{string}*** Warning. Make the directory, #{@path}, writable and try again.\n"
+            puts string
         end
         
         @params[:dir] = inputDir
-
+        
         rescue Errno::ENOENT => e
         string = "***** Directory does not exist, #{@path}.\n"
         string = "#{string}***** Create the directory, #{@path}, and try again.\n"
@@ -24,27 +41,7 @@ class MonitorType_Dir<MonitorType_Threshold
         string = "#{string}***** eg, rm #{@path} && mkdir #{@path}"
         raise MonitorTypeExceptionHandled.new(string)
 	end
-
-    #Constructor: Extract parameters
-    #
-    # @param [String] path Path to directory to check
-	def initialize( params )
-		super( params )
-        if params[:path].nil? then
-            puts "*** Dir parameter missing, path"
-            puts "*** :path => <path to directory to be monitored>"
-            abort
-        end
-		@path = params[:path]
-
-        @context_sentence = "Checking number of files in, #{@path}"
-
-		self.sanitise
-    rescue MonitorTypeExceptionHandled => e
-        puts e.message
-        abort()
-	end
-
+    
 	def getValue
 		return Dir.glob( "#{@path}/*" ).length
 	end

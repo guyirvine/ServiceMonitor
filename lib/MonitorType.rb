@@ -20,9 +20,9 @@ class MonitorType
     # fixing the error is made easier
     def initialize( params )
         if params[:name].nil? then
-            puts "*** Monitor parameter missing, name"
-            puts "*** :name => <name of monitor>"
-            abort
+            string = "*** Monitor parameter missing, name"
+            string = "#{string}*** :name => <name of monitor>"
+            raise MonitorTypeExceptionHandled.new(string)
         end
         @params = params
         @block = params[:block] if !params[:block].nil?
@@ -31,16 +31,17 @@ class MonitorType
         if !@email.nil? then
             if params[:email_sender].nil? then
                 if ENV["EMAIL_SENDER"].nil? then
-                    puts "*** Alert parameter missing, email_sender"
-                    puts "*** An email recipient has been specified for monitor, #{@name}, but no email sender has been specified"
-                    puts "*** :email_sender => <email of sender>"
-                    puts "*** or, a catch all environment variable"
-                    puts "*** EMAIL_SENDER=<email of sender>"
-                    abort
-                else
+                    string = "*** Alert parameter missing, email_sender"
+                    string = "#[string}*** An email recipient has been specified for monitor, #{@name}, but no email sender has been specified"
+                    string = "#[string}*** :email_sender => <email of sender>"
+                    string = "#[string}*** or, a catch all environment variable"
+                    string = "#[string}*** EMAIL_SENDER=<email of sender>"
+                    
+                    raise MonitorTypeExceptionHandled.new(string)
+                    else
                     @sender_email = ENV["EMAIL_SENDER"]
                 end
-            else
+                else
                 @sender_email = params[:admin_email]
             end
         end
@@ -53,14 +54,22 @@ class MonitorType
     end
     
     #Overload this method if any parameters should be checked in context
-    def sanitise
+    def extractParams
+    end
+    
+    #Overload this method if any parameters should be checked in context
+    def setup
+    end
+    
+    #Overload this method if any parameters should be checked in context
+    def teardown
     end
     
     #Check if the monitor has tripped
     def process
         raise "Method needs to be overridden"
     end
-    
+
     #An extention of the main run loop.
     #Each monitor is responsible for knowing when it should run, so this function
     #is called pretty much continuosuly.
@@ -70,14 +79,16 @@ class MonitorType
             begin
                 @next = @cron.next( Time.now )
                 log "Monitor, #{@name}, next run time, #{@next}"
-                self.sanitise
+                self.extractParams
+                self.setup
                 self.process
+                self.teardown
                 rescue MonitorTypeExceptionHandled => e
                 self.alert( e.message )
             end
         end
     end
-
+    
     #Called when a monitor has been tripped
     #
     # @param [String] string A description of the trip that occurred
