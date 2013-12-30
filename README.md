@@ -1,6 +1,6 @@
 #ServiceMonitor
 
-Monitor various parts of a system
+The fastest way to reliably monitor your system
 
 ##Principles
 	#This is aimed at people with computer knowledge
