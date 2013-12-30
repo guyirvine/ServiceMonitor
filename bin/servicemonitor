@@ -11,6 +11,7 @@ require "MonitorType/Threshold"
 require "MonitorType/Beanstalk"
 require "MonitorType/Dir"
 require "MonitorType/FluidDb"
+require "MonitorType/Process"
 require "MonitorManager"
 require "helper_functions"
 
