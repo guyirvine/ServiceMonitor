@@ -12,18 +12,11 @@ require "MonitorType/Beanstalk"
 require "MonitorType/Dir"
 require "MonitorType/FluidDb"
 require "MonitorManager"
+require "helper_functions"
+
 
 #Don't buffer stdout
 $stdout.sync = true
-
-def log( string, verbose=false )
-    type = verbose ? "VERB" : "INFO"
-	if !ENV["VERBOSE"].nil? || verbose==false then
-        timestamp = Time.new.strftime( "%Y-%m-%d %H:%M:%S" )
-        puts "[#{type}] #{timestamp} :: #{string}"
-    end
-end
-
 
 if ARGV.length == 1 then
         dslName = ARGV[0]

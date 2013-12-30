@@ -17,7 +17,7 @@ class MonitorType_FluidDb<MonitorType_Threshold
         if @params[:uri].nil? then
             string = "*** FluidDb parameter missing, uri\n"
             string = "#{string}*** :uri => <uri pointing to db to be monitored>"
-            raise MonitorTypeExceptionHandled.new(string)
+            raise MonitorTypeParameterMissingError.new(string)
         end
         begin
             @uri = URI.parse( @params[:uri] )
@@ -25,13 +25,13 @@ class MonitorType_FluidDb<MonitorType_Threshold
             string = "*** FluidDb encountered an error while parsing the uri"
             string = "#{string}*** uri: #{@params[:uri]}"
             string = "#{string}*** Please fix the uri and run again"
-            raise MonitorTypeExceptionHandled.new(string)
+            raise MonitorTypeParameterMissingError.new(string)
         end
         
         if @params[:sql].nil? then
             string = "*** FluidDb parameter missing, sql"
             string = "#{string}*** :sql => <sql statement, producing a single column, single row which yeidls a number>"
-            raise MonitorTypeExceptionHandled.new(string)
+            raise MonitorTypeParameterMissingError.new(string)
         end
         @sql = @params[:sql]
         
@@ -53,19 +53,18 @@ class MonitorType_FluidDb<MonitorType_Threshold
             raise MonitorTypeExceptionHandled.new(string)
         end
 
+        @params[:fluidDb] = @fluidDb
+	end
+    
+	def getValue
         begin
-        value = @fluidDb.queryForValue( @sql, [] )
-        rescue Exception=>e
+            return @fluidDb.queryForValue( @sql, [] )
+            rescue Exception=>e
             string = "*** FluidDb encountered an error while running the sql\n"
             string = "#{string}*** sql: #{@sql}\n"
             string = "#{string}*** Please fix the query and run again\n"
             raise MonitorTypeExceptionHandled.new(string)
         end
-        @params[:fluidDb] = @fluidDb
-	end
-    
-	def getValue
-        return @fluidDb.queryForValue( @sql, [] )
 	end
 end
 

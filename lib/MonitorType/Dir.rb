@@ -10,24 +10,17 @@ class MonitorType_Dir<MonitorType_Threshold
         if @params[:path].nil? then
             string = "*** Dir parameter missing, path\n"
             string = "#{string}*** :path => <path to directory to be monitored>"
-            raise MonitorTypeExceptionHandled.new(string)
+            raise MonitorTypeParameterMissingError.new(string)
         end
         @path = @params[:path]
         
         @context_sentence = "Checking number of files in, #{@path}"
-        
     end
-    
-    
+
+
 	def setup
         inputDir = Dir.new( @path )
 		@path = inputDir.path
-        if !File.writable?( @path ) then
-            string = "*** Warning. Directory is not writable, #{@path}.\n"
-            string = "#{string}*** Warning. Make the directory, #{@path}, writable and try again.\n"
-            puts string
-        end
-        
         @params[:dir] = inputDir
         
         rescue Errno::ENOENT => e

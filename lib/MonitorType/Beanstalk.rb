@@ -10,11 +10,11 @@ class MonitorType_Beanstalk<MonitorType_Threshold
     # @param [String] queue Name of queue to monitor
 	def extractParams()
         @connection_string = @params[:beanstalk] || "localhost:11300"
-        
+
         if @params[:queue].nil? then
             string = "*** Beanstalk parameter missing, queue\n"
             string = "#{string}*** :queue => <queue name>"
-            raise MonitorTypeExceptionHandled.new(string)
+            raise MonitorTypeParameterMissingError.new(string)
         end
         @queue = @params[:queue]
         
