@@ -13,7 +13,6 @@ class MonitorManager
 		while true do
             @list.each do |m|
                 begin
-                    m.sanitise
                     m.run
                     rescue MonitorTypeExceptionHandled => e
                     m.alert( e.message )
@@ -23,14 +22,15 @@ class MonitorManager
 		end
         
         rescue Interrupt => e
-        puts "Exiting on request ..."
+        string = "Exiting on request ...\n"
+        puts string
 
         rescue Exception => e
-        puts e.class.name
-        puts "*** This is really unexpected."
-        messageLoop = false
-        puts "Message: " + e.message
-        puts e.backtrace
+        string = "#{e.class.name}\n"
+        string = "#{string}*** This is really unexpected.\n"
+        string = "#{string}Message: #{e.message}\n"
+        string = "#{string}e.backtrace\n"
+        puts string
     end
 end
 

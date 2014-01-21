@@ -34,9 +34,10 @@ Net::SMTP.start(@smtp_address,@smtp_port) do |smtp|
 end
 
 rescue Errno::ECONNREFUSED => e
-    puts "*** Conection refused while attempting to connect to SMTP server"
-    puts "*** Recipient, #{@destination}. Body,"
-    puts "*** #{@body}"
+    string = "*** Conection refused while attempting to connect to SMTP server\n"
+    string = "#{string}*** Recipient, #{@destination}. Body,\n"
+    string = "#{string}*** #{@body}\n"
+    puts string
 	end
 end
 

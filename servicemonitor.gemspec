@@ -1,9 +1,9 @@
 Gem::Specification.new do |s|
   s.name        = 'servicemonitor'
-  s.version     = '0.0.16'
-  s.date        = '2013-11-02'
+  s.version     = '0.0.18'
+  s.date        = '2013-12-30'
   s.summary     = "ServiceMonitor"
-  s.description = "Monitor various parts of the system"
+  s.description = "The fastest way to reliably monitor your system."
   s.authors     = ["Guy Irvine"]
   s.email       = 'guy@guyirvine.com'
   s.files       = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
