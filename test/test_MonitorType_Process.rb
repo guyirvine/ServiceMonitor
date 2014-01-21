@@ -31,5 +31,4 @@ class MonitorTypeProcessTest < Test::Unit::TestCase
         assert_equal true, exception_raised
     end
 
-
 end
