@@ -8,7 +8,7 @@ require "MonitorType/Threshold"
 #  => check that the number is not greater than 2
 
 class MonitorType_FluidDb<MonitorType_Threshold
-    
+
     #Extract parameters
     #
     # @param [String] uri Connection string to db
@@ -27,18 +27,18 @@ class MonitorType_FluidDb<MonitorType_Threshold
             string = "#{string}*** Please fix the uri and run again"
             raise MonitorTypeParameterMissingError.new(string)
         end
-        
+
         if @params[:sql].nil? then
             string = "*** FluidDb parameter missing, sql"
             string = "#{string}*** :sql => <sql statement, producing a single column, single row which yeidls a number>"
             raise MonitorTypeParameterMissingError.new(string)
         end
         @sql = @params[:sql]
-        
+
         @context_sentence = "Checking result of sql query, #{@sql}"
-        
+
 	end
-    
+
     #Create the connection to the db, and get the value
     #This ensures that all params are correct.
 	def setup
@@ -49,13 +49,13 @@ class MonitorType_FluidDb<MonitorType_Threshold
             string = "*** FluidDb encountered an error while connecting to the db\n"
             string = "#{string}*** Error: #{e.message}\n"
             string = "#{string}*** uri: #{@uri}\n"
-            string = "#{string}*** Please 3fix the error and run again\n"
+            string = "#{string}*** Please fix the error and run again\n"
             raise MonitorTypeExceptionHandled.new(string)
         end
 
         @params[:fluidDb] = @fluidDb
 	end
-    
+
 	def getValue
         begin
             return @fluidDb.queryForValue( @sql, [] )
