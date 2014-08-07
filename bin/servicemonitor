@@ -12,6 +12,7 @@ require "MonitorType/Beanstalk"
 require "MonitorType/Dir"
 require "MonitorType/FluidDb"
 require "MonitorType/Process"
+require "MonitorType/HttpGetJsonList"
 require "MonitorManager"
 require "helper_functions"
 
@@ -19,13 +20,11 @@ require "helper_functions"
 #Don't buffer stdout
 $stdout.sync = true
 
-if ARGV.length == 1 then
-        dslName = ARGV[0]
-else
-        abort( "Usage: monitor <path to dsl>" )
-end
+abort( "Usage: servicemonitor <path to dsl>" ) if ARGV.length != 1
 
-#Need to remove file name extension 
+dslName = ARGV[0]
+
+#Need to remove file name extension
 ENV["APP_NAME"] = File.basename( dslName ) if ENV["APP_NAME"].nil?
 
 $a = MonitorManager.new

@@ -30,9 +30,10 @@ class MonitorType_Drive<MonitorType_Threshold
 		begin
 		#Check that the path exists
 		drive = Filesystem.stat(@path)
+
 		rescue=>e
 			string = "*** Unable to mount the specifed path\n"
-			string = "#{string}*** path: #{path}\n"
+			string = "#{string}*** path: #{@path}\n"
       string = "#{string}*** Please fix the error and run again\n"
 			raise MonitorTypeExceptionHandled.new("Unable to mount path: #{@path}")
 		end

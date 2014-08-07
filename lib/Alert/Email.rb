@@ -10,18 +10,19 @@ class Alert_Email
 
 		@smtp_address = ENV['smtp_address'].nil? ? 'localhost' : ENV['smtp_address']
         	@smtp_port = ENV['smtp_port'].nil? ? 25 : ENV['smtp_port']
-        
+
+				@destination = destination
         if destination.is_a? Array then
-            @destination = "<#{destination.join( ">,<" )}>"
+            @destination_fmt = "<#{destination.join( ">,<" )}>"
         else
-            @destination = destination
+            @destination_fmt = destination
         end
 	end
 
 	def Send
 message = <<MESSAGE_END
 From: #{ENV['APP_NAME']} #{@sender}
-To: #{@destination}
+To: #{@destination_fmt}
 Subject: #{ENV['APP_NAME']} Alert
 
 #{@body}
@@ -40,4 +41,3 @@ rescue Errno::ECONNREFUSED => e
     puts string
 	end
 end
-

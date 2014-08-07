@@ -23,7 +23,7 @@ class MonitorTypeDriveTest < Test::Unit::TestCase
 
         exception_raised = false
         begin
-            test = MonitorType_Drive.new( :name=>'Bob', :path=>'/asdasd', :min=>'80' ).extractParams
+            test = MonitorType_Drive.new( :name=>'Bob', :path=>'/asdasd', :min=>'80' ).setup
             rescue MonitorTypeExceptionHandled=>e
             exception_raised = true
         end
@@ -31,16 +31,4 @@ class MonitorTypeDriveTest < Test::Unit::TestCase
         assert_equal true, exception_raised
     end
 
-    def test_MustHaveMin
-        test = Test_MonitorType.new( :name=>'Bob', :path=>'/', :min=>'80' ).extractParams
-
-        exception_raised = false
-        begin
-            test = MonitorType_Drive.new( :name=>'Bob', :path=>'/' ).extractParams
-            rescue MonitorTypeParameterMissingError=>e
-            exception_raised = true
-        end
-
-        assert_equal true, exception_raised
-    end
 end

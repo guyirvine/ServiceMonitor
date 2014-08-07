@@ -63,19 +63,19 @@ class MonitorType
 
         log "Loaded Monitor, #{@name}."
     end
-    
+
     #Overload this method if any parameters should be checked in context
     def extractParams
     end
-    
+
     #Overload this method if any parameters should be checked in context
     def setup
     end
-    
+
     #Overload this method if any parameters should be checked in context
     def teardown
     end
-    
+
     #Check if the monitor has tripped
     def process
         raise "Method needs to be overridden"
@@ -113,5 +113,5 @@ class MonitorType
             puts body
 		end
 	end
-    
+
 end
