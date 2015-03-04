@@ -66,6 +66,10 @@ class MonitorType_FluidDb<MonitorType_Threshold
             raise MonitorTypeExceptionHandled.new(string)
         end
 	end
+
+        def teardown
+          @fluidDb.close
+	end
 end
 
 def fluiddb( params )
