@@ -34,9 +34,11 @@ class MonitorType
             raise MonitorTypeMustHaveNameError.new(string)
         end
         @params = params
-        @block = params[:block] if !params[:block].nil?
+        @block = params[:block] unless params[:block].nil?
         @name = params[:name]
         @email = params[:email]
+        @url = params[:url] unless params[:url].nil?
+
         if !@email.nil? then
             #Sender email address from ENV allows for a single sender across all alerts
             #Checking params before ENV allows a particular entry to be different

@@ -29,17 +29,22 @@ class MonitorType_Threshold<MonitorType
     #Provides the means to check a value against thresholds
 	def check( value )
         context_sentence = ""
-        if !@context_sentence.nil? then
+        unless @context_sentence.nil? then
             context_sentence = "#{@context_sentence}\n"
         end
 
+				url = ""
+				unless @url.nil? then
+					url = "\n\n#{@url}\n"
+				end
+
         value = value.to_i
         if !@min.nil? && value < @min then
-            self.alert( "#{context_sentence}Minimum threshold exceeded. Minimum: #{@min}, Actual: #{value}" )
+            self.alert( "#{context_sentence}Minimum threshold exceeded. Minimum: #{@min}, Actual: #{value}#{url}" )
         end
         if !@max.nil? && value > @max then
-            self.alert( "#{context_sentence}Maximum threshold exceeded. Maximum: #{@max}, Actual: #{value}" )
+            self.alert( "#{context_sentence}Maximum threshold exceeded. Maximum: #{@max}, Actual: #{value}#{url}" )
         end
-        
+
 	end
 end
