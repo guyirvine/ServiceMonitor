@@ -1,4 +1,4 @@
-require 'FluidDb'
+require 'fluiddb2'
 require 'monitor_type/threshold'
 
 # A database class for checking a single number against a threshold.
@@ -40,7 +40,7 @@ class MonitorTypeFluidDb < MonitorTypeThreshold
   # This ensures that all params are correct.
   def setup
     begin
-      @fluid_db = FluidDb.Db(@uri)
+      @fluid_db = FluidDb2.db(@uri)
     rescue StandardError => e
       string = "*** FluidDb encountered an error while connecting to the db\n" \
                "*** Error: #{e.message}\n" \
@@ -53,7 +53,7 @@ class MonitorTypeFluidDb < MonitorTypeThreshold
   end
 
   def derived_value
-    @fluid_db.queryForValue(@sql, [])
+    @fluid_db.query_for_value(@sql, [])
   rescue StandardError
     string = "*** FluidDb encountered an error while running the sql\n" \
              "*** sql: #{@sql}\n" \

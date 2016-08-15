@@ -105,7 +105,7 @@ class MonitorType
     body = "#{@name} tripped.\n#{string}"
     puts '*** '
     if !@email.nil?
-      AlertEmail.new(@sender_email, @email, body).Send
+      AlertEmail.new(@sender_email, @email, body).send
       puts "Emailed, #{@email}"
     else
       puts body

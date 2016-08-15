@@ -4,16 +4,16 @@
 $:.unshift './'
 
 require 'net/smtp'
-require 'Alert'
-require 'Alert/Email'
-require 'MonitorType'
-require 'MonitorType/Threshold'
-require 'MonitorType/Beanstalk'
-require 'MonitorType/Dir'
-require 'MonitorType/FluidDb'
-require 'MonitorType/Process'
-require 'MonitorType/HttpGetJsonList'
-require 'MonitorManager'
+require 'alert'
+require 'alert/email'
+require 'monitor_type'
+require 'monitor_type/threshold'
+require 'monitor_type/beanstalk'
+require 'monitor_type/dir'
+require 'monitor_type/fluidDb'
+require 'monitor_type/process'
+require 'monitor_type/http_get_json_list'
+require 'monitor_manager'
 require 'helper_functions'
 
 # Don't buffer stdout
@@ -38,8 +38,9 @@ rescue ArgumentError
        "***   <command>, [:arg=>value]\n"
 rescue SystemExit
 #    rescue SIGTERM=>e
-rescue StandardError
+rescue StandardError => e
   puts 'What the ...'
   puts e.class.name
   puts e.message
+  puts e.backtrace
 end

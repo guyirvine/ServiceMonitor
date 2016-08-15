@@ -1,5 +1,5 @@
 require 'net/smtp'
-require 'Alert'
+require 'alert'
 
 # Email alert class
 # Uses localhost for sending email - Probably need to change this in the future.

@@ -25,11 +25,10 @@ class MonitorManager
     string = "Exiting on request ...\n"
     puts string
 
-  rescue StandardError
-    string = "#{e.class.name}\n" \
-             "*** This is really unexpected.\n" \
-             "Message: #{e.message}\n" \
-             "#{e.backtrace}\n"
-    puts string
+  rescue StandardError => e
+    puts '*** This is really unexpected.'
+    puts e.class.name
+    puts "Message: #{e.message}"
+    puts e.backtrace
   end
 end
