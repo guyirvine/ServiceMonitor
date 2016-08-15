@@ -1,22 +1,18 @@
-require 'test/unit'
-require './lib/MonitorType/Dir.rb'
-require "helper_functions"
+require 'minitest/autorun'
+require './lib/monitor_type/dir'
+require 'helper_functions'
 
+# MonitorTypeDirTest
+class MonitorTypeDirTest < Minitest::Test
+  def test_must_have_path
+    TestMonitorType.new(:name=>'Bob', :path=>'/tmp').extract_params
+    exception_raised = false
+    begin
+      MonitorTypeDir.new( :name=>'Bob' ).extract_params
+    rescue MonitorTypeParameterMissingError
+      exception_raised = true
+    end
 
-class MonitorTypeDirTest < Test::Unit::TestCase
-    
-	def test_MustHavePath
-        test = Test_MonitorType.new( :name=>'Bob', :path=>'/tmp' ).extractParams
-        
-        exception_raised = false
-        begin
-            test = MonitorType_Dir.new( :name=>'Bob' ).extractParams
-            rescue MonitorTypeParameterMissingError=>e
-            exception_raised = true
-        end
-        
-		assert_equal true, exception_raised
-	end
-    
-    
+    assert_equal true, exception_raised
+  end
 end

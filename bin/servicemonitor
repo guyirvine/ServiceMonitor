@@ -1,46 +1,45 @@
 #!/usr/bin/env ruby
 
-#Add the currently running directory to the start of the load path
+# Add the currently running directory to the start of the load path
 $:.unshift './'
 
 require 'net/smtp'
-require "Alert"
-require "Alert/Email"
-require "MonitorType"
-require "MonitorType/Threshold"
-require "MonitorType/Beanstalk"
-require "MonitorType/Dir"
-require "MonitorType/FluidDb"
-require "MonitorType/Process"
-require "MonitorType/HttpGetJsonList"
-require "MonitorManager"
-require "helper_functions"
+require 'Alert'
+require 'Alert/Email'
+require 'MonitorType'
+require 'MonitorType/Threshold'
+require 'MonitorType/Beanstalk'
+require 'MonitorType/Dir'
+require 'MonitorType/FluidDb'
+require 'MonitorType/Process'
+require 'MonitorType/HttpGetJsonList'
+require 'MonitorManager'
+require 'helper_functions'
 
-
-#Don't buffer stdout
+# Don't buffer stdout
 $stdout.sync = true
 
-abort( "Usage: servicemonitor <path to dsl>" ) if ARGV.length != 1
+abort('Usage: servicemonitor <path to dsl>') if ARGV.length != 1
 
-dslName = ARGV[0]
+dsl_name = ARGV[0]
 
-#Need to remove file name extension
-ENV["APP_NAME"] = File.basename( dslName ) if ENV["APP_NAME"].nil?
+# Need to remove file name extension
+ENV['APP_NAME'] = File.basename(dsl_name) if ENV['APP_NAME'].nil?
 
 $a = MonitorManager.new
 
-log "Loading dsl, #{dslName}"
+log "Loading dsl, #{dsl_name}"
 begin
-    load dslName
-    $a.run
-    rescue ArgumentError=>e
-        puts "*** Your dsl is not formatted correctly"
-        puts "*** Ensure each line has the format,"
-        puts "***   <command>, [:arg=>value]"
-    rescue SystemExit=>e
+  load dsl_name
+  $a.run
+rescue ArgumentError
+  puts "*** Your dsl is not formatted correctly\n" \
+       "*** Ensure each line has the format,\n" \
+       "***   <command>, [:arg=>value]\n"
+rescue SystemExit
 #    rescue SIGTERM=>e
-    rescue Exception=>e
-puts "What the ..."
-        puts e.class.name
-        puts e.message
+rescue StandardError
+  puts 'What the ...'
+  puts e.class.name
+  puts e.message
 end

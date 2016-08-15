@@ -1,7 +1,6 @@
-#Base class / Interface for implementing alert types
+# Base class / Interface for implementing alert types
 class Alert
-    
-	def Send( destination, body )
-        raise "Method needs to be overridden"
-	end
+  def send(_destination, _body)
+    fail 'Method needs to be overridden'
+  end
 end

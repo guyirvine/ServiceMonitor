@@ -1,34 +1,38 @@
-require 'test/unit'
-require './lib/MonitorType/FluidDb.rb'
-require "helper_functions"
+require 'minitest/autorun'
+require './lib/monitor_type/fluiddb'
+require 'helper_functions'
 
+# MonitorTypeFluidDbTest
+class MonitorTypeFluidDbTest < Minitest::Test
+  def test_must_have_uri
+    TestMonitorType.new(:name=>'Bob',
+                        :uri=>'pgsql://localhost/db',
+                        :sql=>'SELECT count(*) FROM table').extract_params
 
-class MonitorTypeFluidDbTest < Test::Unit::TestCase
-    
-	def test_MustHaveUri
-        test = Test_MonitorType.new( :name=>'Bob', :uri=>'pgsql://localhost/db', :sql=>'SELECT count(*) FROM table' ).extractParams
-        
-        exception_raised = false
-        begin
-            test = MonitorType_FluidDb.new( :name=>'Bob', :sql=>'SELECT count(*) FROM table' ).extractParams
-            rescue MonitorTypeParameterMissingError=>e
-            exception_raised = true
-        end
-        
-		assert_equal true, exception_raised
-	end
-    
-	def test_MustHaveSql
-        test = Test_MonitorType.new( :name=>'Bob', :uri=>'pgsql://localhost/db', :sql=>'SELECT count(*) FROM table' ).extractParams
-        
-        exception_raised = false
-        begin
-            test = MonitorType_FluidDb.new( :name=>'Bob', :uri=>'pgsql://localhost/db' ).extractParams
-            rescue MonitorTypeParameterMissingError=>e
-            exception_raised = true
-        end
-        
-		assert_equal true, exception_raised
-	end
-    
+    exception_raised = false
+    begin
+      MonitorTypeFluidDb.new(:name=>'Bob',
+                             :sql=>'SELECT count(*) FROM table').extract_params
+    rescue MonitorTypeParameterMissingError
+      exception_raised = true
+    end
+
+    assert_equal true, exception_raised
+  end
+
+  def test_must_have_sql
+    TestMonitorType.new(:name=>'Bob',
+                        :uri=>'pgsql://localhost/db',
+                        :sql=>'SELECT count(*) FROM table').extract_params
+
+    exception_raised = false
+    begin
+      MonitorTypeFluidDb.new(:name=>'Bob',
+                             :uri=>'pgsql://localhost/db' ).extract_params
+    rescue MonitorTypeParameterMissingError
+      exception_raised = true
+    end
+
+    assert_equal true, exception_raised
+  end
 end
