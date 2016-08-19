@@ -27,6 +27,8 @@ class MonitorTypeBeanstalk < MonitorTypeThreshold
   def derived_value
     tube_stats = @beanstalk.stats_tube(@queue)
     tube_stats['current-jobs-ready']
+  rescue Beanstalk::NotFoundError
+    0
   end
 end
 
