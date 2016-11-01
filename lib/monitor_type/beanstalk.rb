@@ -1,4 +1,3 @@
-require 'beanstalk-client'
 require 'monitor_type/threshold'
 
 # A Beanstalk class for checking how many msgs are in a Queue
@@ -33,5 +32,6 @@ class MonitorTypeBeanstalk < MonitorTypeThreshold
 end
 
 def beanstalk(params)
+  require 'beanstalk-client'
   $a.add(MonitorTypeBeanstalk.new(params))
 end

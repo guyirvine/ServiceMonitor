@@ -1,4 +1,3 @@
-require 'fluiddb2'
 require 'monitor_type/threshold'
 
 # A database class for checking a single number against a threshold.
@@ -67,5 +66,6 @@ class MonitorTypeFluidDb < MonitorTypeThreshold
 end
 
 def fluiddb(params)
+  require 'fluiddb2'
   $a.add(MonitorTypeFluidDb.new(params))
 end

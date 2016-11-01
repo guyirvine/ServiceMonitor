@@ -1,4 +1,3 @@
-require 'restclient'
 require 'monitor_type/threshold'
 
 # An http class for checking the length of a json list.
@@ -49,5 +48,6 @@ class MonitorTypeHttpGetJsonList < MonitorTypeThreshold
 end
 
 def httpgetjsonlist(params)
+  require 'restclient'
   $a.add(MonitorTypeHttpGetJsonList.new(params))
 end

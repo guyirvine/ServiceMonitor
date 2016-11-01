@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'servicemonitor'
-  s.version     = '0.2.5'
+  s.version     = '0.2.7'
   s.license     = 'LGPL-3.0'
   s.date        = '2016-11-02'
   s.summary     = 'ServiceMonitor'
@@ -8,9 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Guy Irvine']
   s.email       = 'guy@guyirvine.com'
   s.files       = Dir['{lib}/**/*.rb', 'bin/*', 'LICENSE', '*.md']
-  s.homepage    = 'http://rubygems.org/gems/servicemonitor'
+  s.homepage    = 'https://github.com/guyirvine/ServiceMonitor'
   s.add_dependency('parse-cron')
-  s.add_dependency('beanstalk-client')
-  s.add_dependency('rest-client')
   s.executables << 'servicemonitor'
 end
