@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   s.name        = 'servicemonitor'
-  s.version     = '0.2.4'
+  s.version     = '0.2.5'
   s.license     = 'LGPL-3.0'
-  s.date        = '2016-08-19'
+  s.date        = '2016-11-02'
   s.summary     = 'ServiceMonitor'
   s.description = 'The fastest way to reliably monitor your system.'
   s.authors     = ['Guy Irvine']
@@ -11,7 +11,6 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://rubygems.org/gems/servicemonitor'
   s.add_dependency('parse-cron')
   s.add_dependency('beanstalk-client')
-  s.add_dependency('fluiddb')
   s.add_dependency('rest-client')
   s.executables << 'servicemonitor'
 end
